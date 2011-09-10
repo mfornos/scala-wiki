@@ -1,0 +1,39 @@
+@(
+   title: String, pages: Seq[models.Page], total: Long, pageSize: Long, cp: Int
+)(
+   implicit
+      flash: play.mvc.Scope.Flash
+)
+
+@pagination(pnum: Long) = {
+	@if(total > pageSize) {
+		<div class="pagination">
+			<ul>
+				@if(cp==1){<li class="prev disabled"><a name="prev">&larr; Previous</a></li>}else{<li class="prev"><a href="/?cp=@(scala.math.max(cp-1,1))">&larr; Previous</a></li>}
+			    @for(p: Long <- (1L to pnum)) {
+			    	<li class="@if(p == cp){active}"><a href="/?cp=@p">@p</a></li>
+			    }
+			    @if(cp==pnum){<li class="next disabled"><a name="next">Next &rarr;</a></li>}else{<li class="next"><a href="/?cp=@(cp+1)">Next &rarr;</a></li>}
+		    </ul>
+	    </div>
+    }
+}
+
+@main(title) {
+	@if(flash.get("success")) {
+		<p class="success">@flash.get("success")</p>
+	}
+	
+	@if(pages) {
+    <div id="pages">
+		@pages.map { p =>
+		    @detail(p, "short")
+		}
+        @pagination((total/pageSize)+(if((total%pageSize)>0){1}else{0}))
+	</div>
+	} else {
+	   <div class="alert-message info">
+	     <p>There are no pages. Browse the url of the page that you want to create. Ex. <a style="color: #FFFFCC;font-weight:bold;" href="/hello world">Hello world</a></p>
+	   </div>
+	}
+}

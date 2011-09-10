@@ -1,0 +1,53 @@
+@(
+  title: String, page: models.Page
+)(
+  implicit 
+    flash: play.mvc.Scope.Flash,
+    errors: Map[String,play.data.validation.Error]
+)
+@main(title) {
+	@if(errors) {
+	    <div class="alert-message error">
+	        <p>Please, correct errors in form</p>
+		    <ul>
+		        @errors.map { e =>
+					<li>@e._1 @e._2</li>
+				} 
+			</ul>
+	    </div>
+	 }
+	@form(controllers.Application.save) {
+	  	<fieldset>
+		<input type="hidden" name="id" value="@page.id" />
+	    <div class="clearfix @if(errors.get("Page.title")!=None){ error }">
+	        <label for="title">Title</label>
+	        <div class="input">
+		        <input type="text" name="title" value="@title" class="xxlarge" />
+		        <span class="help-inline">@errors.get("Page.title")</span>
+	        </div>
+	    </div>
+	    <div class="clearfix @if(errors.get("Page.description")!=None){ error }">
+	        <label for="title">Description</label>
+	        <div class="input">
+		        <textarea name="description" class="xxlarge" rows="5">@page.description</textarea>
+		        <span class="help-inline">
+		        	@errors.get("Page.description")
+				</span>
+	        </div>
+	    </div>
+	    <div class="clearfix @if(errors.get("Page.content")!=None){ error }">
+	        <label for="content">Content</label>
+	        <div class="input">
+	        	<textarea name="content" class="xxlarge" rows="15">@page.content</textarea>
+	        	<span class="help-inline">
+		        	@errors.get("Page.content")
+				</span>
+	        </div>
+	    </div>
+	    </fieldset>
+	    <div class="actions">
+			<input type="submit" value="Save" class="btn primary" />
+			<a href="/" class="btn">Cancel</a>
+		</div>
+	}
+}

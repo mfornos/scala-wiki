@@ -1,0 +1,12 @@
+@(page:models.Page, mode: String)
+	
+<div class="page">
+	<h1><a href="@action(controllers.Application.page(page.title))">@page.title</a></h1>
+	<div class="triangle-border top">
+		<span style="float:right;margin-left:5px;">
+			<a href="@action(controllers.Application.edit(page.title))" class="btn small" style="margin-top:-10px;">Edit</a>
+		</span>
+		@Html(page.description)
+	</div>
+	@if(mode == "full") { <div class="page-body">@Html(page.content)</div> }
+</div>
