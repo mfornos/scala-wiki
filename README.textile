@@ -4,6 +4,6 @@ A bare bones wiki with Scala and OrientDB
 
 h2. Usage
 
-[write here...]
+Run it with Play!
 
 //
